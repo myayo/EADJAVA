@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="eadApp" class="cssmasks">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>EAD JAVA</title>
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" />
+    <link href="styles/abn_tree.css" rel="stylesheet">
+  </head>
+
+  <body ng-controller="MainCtrl">
+
+  	<div id="sidebar">
+  		<div data-ng-include data-src="'views/explorer.html'">
+    	</div>
+  	</div>
+  
+  	<div id="content">
+
+  		<div id="top-content">
+  			<div data-ng-include data-src="'views/menu.html'" style="position: relative">  
+	        </div>
+<!-- 	        <div data-ng-include data-src="'views/editor.html'"> -->
+  		</div>
+  
+  		<div id="bottom-content">
+			<div data-ng-include data-src="'views/Terminal.html'" id="window"></div>
+		</div>
+  
+  		<div id="content-resizer" 
+  			resizer="horizontal" 
+  			resizer-height="6" 
+  			resizer-top="#top-content" 
+  			resizer-bottom="#bottom-content">
+  		</div>
+  
+  	</div>
+  
+  	<div id="sidebar-resizer" 
+  		resizer="vertical" 
+  		resizer-width="6" 
+  		resizer-left="#sidebar" 
+  		resizer-right="#content"
+  		resizer-max="400">
+  	</div>
+  	<script src="http://code.jquery.com/jquery-2.0.3.min.js" data-semver="2.0.3" data-require="jquery"></script>
+  	<script src="scripts/vendors/bootstrap.min.js"></script>
+    <script data-semver="1.2.13" src="http://code.angularjs.org/1.2.13/angular.js" data-require="angular.js@1.2.x"></script>
+    <script type="text/javascript" src="scripts/vendors/ace.js"></script>
+    <script src="scripts/vendors/mode-java.js"></script>
+    <script src="scripts/vendors/theme-twilight.js"></script>
+	<script type="text/javascript" src="scripts/vendors/ui-ace.js"></script>
+	<script src="scripts/directives.js"></script>
+    <script src="scripts/vendors/abn_tree_directive.js"></script>
+    <script src="app.js"></script>
+    <script src="resizer.js"></script>
+    
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        $(document).on('click', '.dropdown-menu', function (e) {
+            $(this).hasClass('keep_open') && e.stopPropagation(); // This replace if conditional.
+        }); 
+    });
+    </script>
+    
+    
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		var $element = $("#top-content");
+    		var lastHeight = $("#top-content").outerHeight(true);
+    		function checkForChanges()
+    		{
+    		    if ($element.outerHeight(true) != lastHeight)
+    		    {
+    		    	var menuHeight = $("#menu").outerHeight(true);
+    		    	var editorTabHeight = $(".editor-tabs-shell").outerHeight(true);
+    		        lastHeight = $element.outerHeight(true); 
+    		        var editorHeight = lastHeight - menuHeight - editorTabHeight;
+    		        $(".ace_editor").css({
+    		        	height: editorHeight + "px"
+    		        })
+    		    }
+
+    		    setTimeout(checkForChanges, 50);
+    		}
+    		
+    		checkForChanges();
+    		
+    	})
+    </script>
+    
+  </body>
+
+</html>

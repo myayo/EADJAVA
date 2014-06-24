@@ -1,0 +1,138 @@
+ 
+<script type="text/javascript">
+	$(".logo").tooltip();
+</script>
+ 
+ <div class="navbar navbar-blue navbar-static-top" id="menu">	
+	<div class="navbar-header">
+		<a href="" class="navbar-brand logo" data-toggle="tooltip" data-placement="bottom" title="Run" ng-click="compileandrun()">
+			<span class="glyphicon glyphicon-play-circle"></span>
+		</a>
+		<a href="" class="navbar-brand logo" data-toggle="tooltip" data-placement="bottom" title="Compile">
+			<span class="glyphicon glyphicon-record"></span>
+		</a>
+		<a href="" class="navbar-brand logo" data-toggle="tooltip" data-placement="bottom" title="Save Files" ng-click="saveFile()">
+			<span class="glyphicon glyphicon-floppy-saved"></span>
+		</a>
+		<a href="" class="navbar-brand logo" data-toggle="tooltip" data-placement="bottom" title="Zoom in" ng-click="zoominEditor()">
+			<span class="glyphicon glyphicon-zoom-in"></span>
+		</a>
+		<a href="" class="navbar-brand logo" data-toggle="tooltip" data-placement="bottom" title="Zoom out" ng-click="zoomOutEditor()">
+			<span class="glyphicon glyphicon-zoom-out"></span>
+		</a>
+		<a href="" class="navbar-brand logo" data-toggle="tooltip" data-placement="bottom" title="config">
+			<span class="glyphicon glyphicon-wrench"></span>
+		</a>
+	</div>
+	<ul class="nav navbar-nav navbar-right">
+			<li class="dropdown"><a href="" class="dropdown-toggle"
+				data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
+				<ul class="dropdown-menu">
+					<li><a href="#">Account Settings <span
+							class="glyphicon glyphicon-cog pull-right"></span></a></li>
+					<li class="divider"></li>
+					<li><a href="#">User stats <span
+							class="glyphicon glyphicon-stats pull-right"></span></a></li>
+					<li class="divider"></li>
+					<li><a href="#">Messages <span class="badge pull-right">
+								42 </span></a></li>
+					<li class="divider"></li>
+					<li><a href="#">Sign Out <span
+							class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+				</ul></li>
+ </ul>
+ </div>
+		
+<div  class="panel panel-default editor" ng-show="!showEditor()">
+  	<div class="panel-heading">
+    	<h3 class="panel-title">Project</h3>
+  	</div>
+  	<div class="panel-body">
+  		<div ng-show="projectsLoaded">
+		    <div ng-show="projects.length == 0" class="well">
+		    		 <span>Hi {{username}}, There are no project in your workspace use</span>
+		    		 <span class="glyphicon glyphicon-plus"></span> 
+		    		 <span>to add Project</span>
+		    </div>
+		    <div ng-show="projects.length > 0">
+		    	<div class="label label-primary">Hi {{username}}, You have <span class="badge">{{projects.length}}</span> project(s) in your workspace, click on one to load it</div>
+		    	<div class="list-group">
+				    <a ng-repeat="project in projects" ng-click="loadProjectFiles(project)" class="list-group-item">
+					   <span >{{project}}</span>
+					</a>
+				</div>
+		    </div>
+		 </div>
+		 <div ng-show="!projectsLoaded">
+	 		 <div class="anim">
+	             <div class="anim_block block_1"></div>
+	             <div class="anim_block block_2"></div>
+	             <div class="anim_block block_3"></div>
+			</div>
+		 </div>
+  	</div>
+</div>
+
+<div ng-show="showEditor()" class="editor">
+	<div class="editor-tabs-shell">
+		<div class="editor-tabs" tab-resize="openFiles">
+			<div class="editor-tab" ng-repeat="file in openFiles" ng-style="{'width': tabWidth}" ng-click="setSelectedIndex($index)" ng-class="editorClass(file)">
+				<div class="editor-tab-favicon" style="background-image: url('images/java.png')"></div>
+	            <div class="editor-tab-title">{{file.label}}</div>
+	            <div class="editor-tab-close" ng-click="closeTab($index)"></div>
+	            <div class="editor-tab-curves">
+	            	<div class="editor-tab-curve-left-shadow2"></div>
+	            	<div class="editor-tab-curve-left-shadow1"></div>
+	                <div class="editor-tab-curve-left"></div>
+	                <div class="editor-tab-curve-right-shadow2"></div>
+	                <div class="editor-tab-curve-right-shadow1"></div>
+	                <div class="editor-tab-curve-right"></div>
+	             </div>
+		    </div>
+	     </div>
+	  </div>
+	  <div class="editor-shell-bottom-bar"></div>
+	  <div ui-ace="{onLoad : aceLoaded}" ng-model="openFiles[selectedIndex].src">
+	  </div>
+	  
+	  <div class="ace-option">
+			<div class="dropup">
+				<a href="" class="dropdown-toggle" data-toggle="dropdown">
+					<i class="glyphicon glyphicon-cog"></i>
+				</a>
+				<ul class="dropdown-menu keep_open">
+					<li>
+						<a href="#">Account Settings 
+							<span class="glyphicon glyphicon-cog pull-right"></span>
+						</a>
+					</li>
+					<li>
+						<a href="#">User stats 
+							<span class="glyphicon glyphicon-stats pull-right"></span>
+						</a>
+					</li>
+					<li>
+						<a href="#">Messages 
+							<span class="badge pull-right">	42</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">Sign Out 
+							<span class="glyphicon glyphicon-log-out pull-right"></span>
+						</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a href="#" class="dropItem">Font size
+							<input type="number">
+						</a>
+					</li>
+					<li>
+						<a href="#" class="dropItem">Theme
+						</a>
+					</li>
+				</ul>
+			</div>
+	 </div>
+			
+</div>

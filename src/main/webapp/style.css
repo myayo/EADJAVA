@@ -1,0 +1,529 @@
+/**
+** EXPLORER STYLE
+**/
+#sidebar {
+	background-color: #EEE;
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    overflow: auto;
+}
+
+#sidebar-resizer {
+	background-color: #666;
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 200px;
+    width: 6px;
+    cursor: e-resize;
+}
+
+#sidebar-resizer:hover{
+	background-color: #AAA;
+}
+
+.control > li{
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-size: 16px;
+	height: 36px;
+	line-height: 36px;
+	list-style: none;
+	margin: 0;
+	top: 0;
+	text-align: center;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	width: 36px;
+}
+
+.control {
+	background: #000;
+	border-top: 1px solid rgba(0,0,0,.2);
+	height: 36px;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	min-width: 200px;
+	max-width: 500px;
+}
+
+/**
+*** END EXPLORER STYLE
+**/
+
+/**
+** MENU STYLE
+**/
+.navbar-nav > li > a {
+	padding-top:5px !important;
+	 padding-bottom:5px !important;
+}
+
+.navbar {
+	min-height:32px !important;
+	height : 36px;
+}
+
+.navbar-blue {
+    border-width:0;
+	background-color:#3B5999;
+    color:#ffffff;
+    font-family:arial,sans-serif;
+    top:0;
+    position:fixed;
+    width:100%;
+}
+
+.navbar-blue li > a,.navbar-toggle  {
+   color:#efefef;
+}
+
+.navbar-blue .dropdown-menu li a {
+	color:#2A4888;
+}
+
+.navbar-blue li>a:hover, .navbar-blue li>a:focus, .navbar-blue .open,
+.navbar-blue .open>a, .navbar-blue .open>a:hover, .navbar-blue .open>a:focus {
+   background-color:#2A4888;
+   color:#fff;
+}
+
+.logo {
+  display:block;
+  padding:3px;
+  background-color:#fff;
+  color:#3B5999;
+  height:28px;
+  width:28px;
+  margin:3px;
+  margin-right:2px;
+  margin-left:5px;
+  font-size:20px;
+  font-weight:700;
+  text-align:center;
+  text-decoration:none;
+  text-shadow:0 0 1px;
+  border-radius:2px;
+}
+
+.navbar-nav.navbar-right:last-child{
+	padding-right: 0px;
+}
+
+/**
+** END MENU STYLE
+**/
+
+/**
+** EDITOR STYLE
+**/
+
+.editor{
+	padding-top: 44px;
+}
+
+.editor-tabs-shell {
+	position: relative;
+	background-color: #e0e0e0;
+	background-image: -webkit-linear-gradient(#e2e2e2, #d0d0d0);
+	background-image: -moz-linear-gradient(#e2e2e2, #d0d0d0);
+	padding: 10px 10px 6px 10px;
+	-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	-ms-border-radius: 4px 4px 0 0;
+	-o-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+	height: 38px;
+	overflow: hidden;
+}
+
+.editor-tabs-shell .editor-shell-bottom-bar {
+	position: absolute;
+	bottom: 0px;
+	height: 5px;
+	left: 0px;
+	width: 100%;
+	border-top: 1px solid rgba(0, 0, 0, 0.21);
+	-webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.6);
+	-moz-box-shadow: inset 0 1px rgba(255, 255, 255, 0.6);
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.6);
+	background-color: #e3e3e3;
+	background-image: -webkit-linear-gradient(#e3e3e3, #e0e0e0);
+	background-image: -moz-linear-gradient(#e3e3e3, #e0e0e0);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+	z-index: 20;
+}
+
+.editor-tabs {
+	*zoom: 1;
+	width: 99999px;
+}
+
+.editor-tabs:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.editor-tabs * {
+	-webkit-user-select: none;
+	cursor: default;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial,
+		Helvetica, sans-serif;
+	line-height: 15px;
+}
+
+.editor-tabs .editor-tab {
+	float: left;
+	position: relative;
+	height: 25px;
+	width: 180px;
+	border: 0px;
+	margin: 0px;
+	z-index: 1;
+	background-color: #e0e0e0;
+	-webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.6), 0 -1px
+		rgba(0, 0, 0, 0.2), -1px 0 rgba(0, 0, 0, 0.2), 1px 0
+		rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: inset 0 1px rgba(255, 255, 255, 0.6), 0 -1px
+		rgba(0, 0, 0, 0.2), -1px 0 rgba(0, 0, 0, 0.2), 1px 0
+		rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.6), 0 -1px
+		rgba(0, 0, 0, 0.2), -1px 0 rgba(0, 0, 0, 0.2), 1px 0
+		rgba(0, 0, 0, 0.2);
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ececec),
+		color-stop(100%, #d3d3d3));
+	background-image: -webkit-linear-gradient(top, #ececec, #d3d3d3);
+	background-image: -moz-linear-gradient(top, #ececec, #d3d3d3);
+	background-image: -o-linear-gradient(top, #ececec, #d3d3d3);
+	background-image: linear-gradient(top, #ececec, #d3d3d3);
+}
+
+.cssmasks .editor-tabs .editor-tab {
+	-webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.8), 0 -1px
+		rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: inset 0 1px rgba(255, 255, 255, 0.8), 0 -1px
+		rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 1px rgba(255, 255, 255, 0.8), 0 -1px
+		rgba(0, 0, 0, 0.2);
+	margin: 0 5px 0 20px;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves {
+	display: none;
+}
+
+.cssmasks .editor-tabs .editor-tab .editor-tab-curves {
+	display: block;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves * {
+	position: absolute;
+	width: 20px;
+	height: 24px;
+	-webkit-mask-size: 100%;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left,.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left-shadow1,.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left-shadow2
+	{
+	-webkit-mask-image: url("svg/tab-left.svg");
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right,.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right-shadow1,.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right-shadow2
+	{
+	-webkit-mask-image: url("svg/tab-right.svg");
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left,.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right
+	{
+	top: 1px;
+	z-index: 1;
+	background-color: #e0e0e0;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ececec),
+		color-stop(100%, #d3d3d3));
+	background-image: -webkit-linear-gradient(top, #ececec, #d3d3d3);
+	background-image: -moz-linear-gradient(top, #ececec, #d3d3d3);
+	background-image: -o-linear-gradient(top, #ececec, #d3d3d3);
+	background-image: linear-gradient(top, #ececec, #d3d3d3);
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left {
+	left: -20px;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right {
+	right: -20px;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left-shadow1,.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right-shadow1
+	{
+	top: 0px;
+	width: 21px;
+	height: 25px;
+	background-color: white;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left-shadow1
+	{
+	left: -21px;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right-shadow1
+	{
+	right: -21px;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left-shadow2,.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right-shadow2
+	{
+	top: -1px;
+	width: 22px;
+	height: 26px;
+	background: rgba(0, 0, 0, 0.24);
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-left-shadow2
+	{
+	left: -22px;
+}
+
+.editor-tabs .editor-tab .editor-tab-curves .editor-tab-curve-right-shadow2
+	{
+	right: -22px;
+}
+
+.editor-tabs .editor-tab.editor-tab-current {
+	z-index: 999;
+	background-color: #f9f9f9;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9f9f9),
+		color-stop(100%, #e3e3e3));
+	background-image: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+	background-image: -moz-linear-gradient(top, #f9f9f9, #e3e3e3);
+	background-image: -o-linear-gradient(top, #f9f9f9, #e3e3e3);
+	background-image: linear-gradient(top, #f9f9f9, #e3e3e3);
+}
+
+.editor-tabs .editor-tab.editor-tab-current .editor-tab-curves .editor-tab-curve-left,.editor-tabs .editor-tab.editor-tab-current .editor-tab-curves .editor-tab-curve-right
+	{
+	background-color: #f9f9f9;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f9f9f9),
+		color-stop(100%, #e3e3e3));
+	background-image: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+	background-image: -moz-linear-gradient(top, #f9f9f9, #e3e3e3);
+	background-image: -o-linear-gradient(top, #f9f9f9, #e3e3e3);
+	background-image: linear-gradient(top, #f9f9f9, #e3e3e3);
+}
+
+.editor-tabs .editor-tab.editor-tab-current .editor-tab-curves .editor-tab-curve-left-shadow1,.editor-tabs .editor-tab.editor-tab-current .editor-tab-curves .editor-tab-curve-right-shadow1,.editor-tabs .editor-tab.editor-tab-current .editor-tab-curves .editor-tab-curve-left-shadow2,.editor-tabs .editor-tab.editor-tab-current .editor-tab-curves .editor-tab-curve-right-shadow2
+	{
+	height: 25px;
+}
+
+.editor-tabs .editor-tab .editor-tab-favicon {
+	height: 16px;
+	width: 16px;
+	background-size: 16px;
+	position: absolute;
+	left: 9px;
+	top: 5px;
+	z-index: 3;
+}
+
+.cssmasks .editor-tabs .editor-tab .editor-tab-favicon {
+	left: -2px;
+	top: 4px;
+}
+
+.editor-tabs .editor-tab .editor-tab-title {
+	color: #444444;
+	padding: 5px 30px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.cssmasks .editor-tabs .editor-tab .editor-tab-title {
+	padding: 5px 5px 5px 19px;
+}
+
+.editor-tabs .editor-tab .editor-tab-close {
+	position: absolute;
+	top: 6px;
+	right: 7px;
+	width: 14px;
+	height: 14px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	z-index: 2;
+}
+
+.cssmasks .editor-tabs .editor-tab .editor-tab-close {
+	right: -6px;
+	top: 5px;
+}
+
+.editor-tabs .editor-tab .editor-tab-close:before {
+	content: "\00D7";
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 14px;
+	width: 14px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	text-align: center;
+	font-size: 11px;
+	line-height: 12px;
+	color: #888888;
+	text-shadow: 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.editor-tabs .editor-tab .editor-tab-close:hover:before,.editor-tabs .editor-tab .editor-tab-close:active:before
+	{
+	-webkit-font-smoothing: antialiased;
+	color: white;
+	text-shadow: 0 1px #b9554c;
+}
+
+.editor-tabs .editor-tab .editor-tab-close:hover,.editor-tabs .editor-tab .editor-tab-close:active
+	{
+	-webkit-box-shadow: inset 0 0 0 1px #b9554c;
+	-moz-box-shadow: inset 0 0 0 1px #b9554c;
+	box-shadow: inset 0 0 0 1px #b9554c;
+	background: #dd837b;
+}
+
+.editor-tabs .editor-tab .editor-tab-close:active:before {
+	-webkit-box-shadow: inset 0 0 0 1px #b9554c, inset 0 1px 3px #b9554c,
+		inset 0 0 20px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: inset 0 0 0 1px #b9554c, inset 0 1px 3px #b9554c, inset
+		0 0 20px rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0 0 0 1px #b9554c, inset 0 1px 3px #b9554c, inset 0 0
+		20px rgba(0, 0, 0, 0.1);
+}
+
+.editor-tab {
+	min-width: 45px;
+	max-width: 180px;
+}
+
+.ace_editor {
+	height: 400px;
+	min-height: 200px;
+}
+
+.ace-option{
+	position: absolute;
+	right: 0; 
+	bottom: 0; 
+}
+
+.ace-option .dropdown-menu{
+	left: -150px;
+}
+
+.ace-option .a{
+	color: #428bca
+}
+
+
+/**
+** END EDITOR STYLE
+**/
+
+#content {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 206px /* 200 + 6*/;
+    right: 0;
+    overflow: hidden;
+}
+#top-content {
+    position: absolute;
+    top: 0;
+    bottom: 136px; /* 130 + 6 */
+    left: 0;
+    right: 0;
+    background-color: #444;
+    overflow: auto;
+}
+#bottom-content {
+    position: absolute;
+    height: 130px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+
+#content-resizer {
+    position: absolute;
+    height: 6px;
+    bottom: 130px;
+    left: 0;
+    right: 0;
+    background-color: #666;
+    cursor: n-resize;
+}
+
+#sidebar-resizer:hover, #preview-resizer:hover {
+	background-color: #AAA;
+}
+
+/**
+** ANIMATION
+**/
+
+.anim{
+	width: 50%;
+	margin: 0 auto;
+}
+.anim_block{
+	background-color:#9FC0FF;
+	border:2px solid #3B5998;
+	height:30px;
+	float: left;
+	margin-left:5px;
+	width:8px;
+        opacity:0.1;
+	-webkit-transform:scale(0.7);
+	-webkit-animation-name: facebook;
+ 	-webkit-animation-duration: 1s;
+ 	-webkit-animation-iteration-count: infinite;
+ 	-webkit-animation-direction: linear;
+	
+	}
+.block_1{
+ 	-webkit-animation-delay: .3s;
+ }
+.block_2{
+ 	-webkit-animation-delay: .4s;
+}
+.block_3{
+ 	-webkit-animation-delay: .5s;
+}
+@-webkit-keyframes facebook{
+	0%{-webkit-transform: scale(1.2);opacity:1;}
+	100%{-webkit-transform: scale(0.7);opacity:0.1;}
+}
+
