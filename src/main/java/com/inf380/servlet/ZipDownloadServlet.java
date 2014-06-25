@@ -31,7 +31,7 @@ public class ZipDownloadServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = request.getParameter("username");
+		String username = request.getParameter("user");
 		String path = request.getParameter("path");
 		String projectPath = Configuration.projectsBaseUrl + username + File.separator + path;
 		byte[] zip = zipService.createZip(projectPath);
