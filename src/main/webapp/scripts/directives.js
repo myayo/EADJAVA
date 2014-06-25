@@ -3,6 +3,9 @@ angular.module("eadApp").directive("tabResize", function() {
 		
 		scope.$watch('openFiles', function() {
 			var tabs = $('.editor-tabs').children();
+			if(tabs.length == 1){
+				return 180;
+			}
 		    var margin = (parseInt(tabs.first().css('marginLeft'), 10) + parseInt(tabs.first().css('marginRight'), 10)) || 0;
 		    var parentwidth = $('.editor-tabs').parent().width() - 50;
 		    var width = (parentwidth / tabs.length) - margin;
