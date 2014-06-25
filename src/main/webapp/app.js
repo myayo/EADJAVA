@@ -129,6 +129,12 @@ app.factory("FileService", function() {
 		 });
 	};
 	
+	compileRunService.Stop = function(){
+		 compileRunService.ws.send({
+			 action: "stop"
+		 });
+	};
+	
 	return compileRunService;
 	
 });
@@ -453,11 +459,21 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		return $scope.openFiles.length > 0;
 	};
 	
+	$scope.compile = function(){
+		$scope.compileResult = "Compiling...";
+		var path = $scope.files[0].path;
+		CompileRunService.compile(path,null, $scope.username);
+	};
+	
 	$scope.compileandrun = function(){
 		$scope.compileResult = "Compiling...";
 		var path = $scope.files[0].path;
 		var mainClassName = $scope.openFiles[$scope.selectedIndex].path;
 		CompileRunService.compileAndRun(path, mainClassName, $scope.username);
+	};
+	
+	$scope.stop = function(){
+		CompileRunService.stop();
 	};
 	
 	$scope.compileResult = "";

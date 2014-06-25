@@ -1,7 +1,6 @@
 package com.inf380.ead.endpoint;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.StringReader;
 
 import javax.json.Json;
@@ -10,35 +9,36 @@ import javax.websocket.OnMessage;
 import javax.websocket.server.ServerEndpoint;
 
 import com.inf380.ead.config.Configuration;
-import com.inf380.ead.service.CompileRunDebugService;
+import com.inf380.ead.service.CompileRunService;
 
 @ServerEndpoint("/compileRunEndpoint")
 public class CompileRunEndpoint {
 
 
+	private static CompileRunService compileRunService=new CompileRunService();
+
 	/**
 	 * message = {action : 'run' ou 'compile' ou 'compilerun'
 	 * 			  path : 'chemin vers le dossier des fichiers sources'
 	 * 			  mainClassPath: 'chemin vers le fichier main'}
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
 	@OnMessage
-	public String onMessage(String message) throws IOException{
+	public String onMessage(String message) throws Exception{
 		System.out.println("receiving message  : "+message);
 		String result = "";
 		//decode message
 		JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
-		CompileRunDebugService compileRunDebugService = new CompileRunDebugService();
 		String action = jsonObject.getString("action");
 		String path = jsonObject.getString("path");
 		String mainClassName = "";
 		switch (action) {
 		case "compile":
-			result = compileRunDebugService.compile(path, path + "/bin");
+			result = compileRunService.compile(path, path + "/bin");
 			break;
 		case "run":
-			mainClassName = jsonObject.getString("mainClassPath"); 
-			result = compileRunDebugService.run(mainClassName, path+ "/bin");
+			mainClassName = jsonObject.getString("mainClassPath");
+			result = compileRunService.run(path + "/bin", mainClassName);
 			break;
 		case "compilerun":
 			mainClassName = jsonObject.getString("mainClassName");
@@ -47,8 +47,11 @@ public class CompileRunEndpoint {
 			mainClassName.replaceAll("/", ".");
 			String username = jsonObject.getString("username");
 			String projectPath = Configuration.projectsBaseUrl + username +File.separator+ path;
-			result = compileRunDebugService.compileRun( projectPath , projectPath+ "/bin",mainClassName);
+			result = compileRunService.compileAndRun(projectPath, projectPath + "/bin", mainClassName);
 			break;
+		case "stop":
+			System.out.println("old action "+action+" going to be stop");
+			result = compileRunService.stop();
 		}
 		System.out.println("Result : "+result);
 		return result;

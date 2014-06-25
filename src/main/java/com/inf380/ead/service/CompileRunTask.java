@@ -6,17 +6,93 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.io.FileUtils;
 
 
-public class CompileRunDebugService {
-
-	/************Constructor***************/
-	public CompileRunDebugService(){
-
+public class CompileRunTask implements Callable<String> {
+	private String operation;
+	private String sourcesPath, classPath, mainClass;
+	
+	public CompileRunTask(){
+	}
+	
+	public CompileRunTask(String op, String sP,String cP){
+		operation=op;
+		sourcesPath=sP;
+		classPath=cP;
 	}
 
+	public CompileRunTask(String op, String sP,String cP, String mC){
+		operation=op;
+		sourcesPath=sP;
+		classPath=cP;
+		mainClass=mC;
+	}
+	
+	@Override
+	public String call() throws Exception {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		String result="";
+		if(operation.equals("compile")){
+			try {
+				result= compile(sourcesPath, classPath);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(operation.equals("run")){
+			result= run( mainClass, classPath);
+		}
+		if(operation.equals("compilerun")){
+			try {
+				result= compileRun(sourcesPath, classPath, mainClass);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	/************Getters and Setters***************/
+
+	
+	public String getOperation() {
+		return operation;
+	}
+
+	public void setOperation(String operation) {
+		this.operation = operation;
+	}
+
+	public String getSourcesPath() {
+		return sourcesPath;
+	}
+
+	public void setSourcesPath(String sourcesPath) {
+		this.sourcesPath = sourcesPath;
+	}
+
+	public String getClassPath() {
+		return classPath;
+	}
+
+	public void setClassPath(String classPath) {
+		this.classPath = classPath;
+	}
+
+	public String getMainClass() {
+		return mainClass;
+	}
+
+	public void setMainClass(String mainClass) {
+		this.mainClass = mainClass;
+	}
+	
 	/************Methods***************/
 
 	/**
@@ -139,5 +215,7 @@ public class CompileRunDebugService {
 		return javaFiles;
 
 	}
+	
+	
 }
 
