@@ -365,7 +365,8 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		//communicate with serveur createProject to server createFile = function(path, username, type, src)
 		FileService.createFile(project.path, $scope.username, "directory");
 		$scope.files = [project];
-		
+		var projectpath = $scope.files[0].path;
+		$scope.downloadUrl = "ZipDownloadServlet?user=" +$scope.username + "&path=" + projectpath;
 	};
   
   
