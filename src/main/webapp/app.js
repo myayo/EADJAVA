@@ -61,6 +61,15 @@ app.factory("FileService", function() {
 		FileService.ws.send(json);
 	};
 	
+	FileService.removeFile = function(path,  username){
+		var json = JSON.stringify({
+			action: "removeFile",
+			path: path,
+			username: username
+		});
+		FileService.ws.send(json);
+	};
+	
 	return FileService;
 	
 }).factory("CompileRunService", function(){
@@ -135,6 +144,8 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
   $scope.projects = [];
   $scope.projectsLoaded = false;
   $scope.startTreeAnim = false;
+  
+  $scope.downloadUrl = "/ZipServlet/";
 	//message received from server 
 	FileService.subscribe(function(message){
 //		console.log(message);
@@ -143,12 +154,14 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		case "getProject":
 			$scope.projects = obj.projects;
 			$scope.projectsLoaded = true;
-			console.log($scope.projects.length);
 			break;
 			
 		case "loadProjectFile":
 			$scope.files = [obj.files];
+			var projectpath = $scope.files[0].path
+			$scope.downloadUrl += "?user=" +$scope.username + "&path=" + projectpath;
 			$scope.startTreeAnim = false;
+			$scope.$apply();
 			break;
 		case "createFile":
 			console.log(message);
@@ -260,7 +273,71 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		addFileInTree(newInterface);
   };
   
+  $scope.selectedFile = undefined;
+  
+  $scope.remove = function(){
+	  //check if file is open and close it
+	  var file = $scope.selectedFile;
+	  if(file == undefined){
+		  return;
+	  }
+	  var fileIndex = -1;
+	  for(var i = 0; i < $scope.openFiles.length; i++){
+		  var openFile = $scope.openFiles[i];
+		  if(file.path = openFile.path){
+			  fileIndex = i;
+			  break;
+		  }
+	  }
+	  if(fileIndex != -1){
+		  $scope.openFiles.splice(fileIndex, 1);
+	  }
+	  //remove file from project file
+	  //1- check if project to delete
+	  console.log(file);
+	  if(file.path == $scope.files[0].path){
+		  $scope.files = [];
+	  }else{
+		  
+		  removeFileInTree(file, $scope.files[0].children);	
+		  
+	  }
+	  
+	  FileService.removeFile(file.path, $scope.username);
+	  $scope.selectedFile = undefined;
+	  
+  };
+  
+  var removeFileInTree = function(file, tree){
+	  var pathParts = file.path.split("/");
+	  var children = tree;
+	  for (var i = 1; i < pathParts.length - 1; i++) {
+		var folderIndex = -1;
+		for (var j = 0; j < children.length; j++) {
+			if(children[j].label == pathParts[i]){
+				folderIndex = j;
+				break;
+			}
+		}
+		
+		children = children[folderIndex].children;
+		
+	  }
+	  
+	  var fileindex = -1;
+	  for(var i = 0; i < children.length; i++){
+		  if(children[i].label == file.label){
+			  fileindex = i;
+			  break;
+		  }
+	  }
+	  
+	  children.splice(fileindex, 1);
+	  
+  }
+  
   $scope.loadFile= function(file){
+	  $scope.selectedFile  = file;
 		if(file.src){
 			var index = 0;
 			var found = false;

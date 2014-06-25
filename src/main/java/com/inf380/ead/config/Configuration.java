@@ -1,6 +1,11 @@
 package com.inf380.ead.config;
 
+/**
+ * Class that contains application configuration variable
+ * @author Abbès
+ *
+ */
 public class Configuration {
 
-	public static String projectsBaseUrl = "/home/ubuntu/inf380/";
+	public static String projectsBaseUrl = "C:\\Users\\Abbès\\Desktop";
 }

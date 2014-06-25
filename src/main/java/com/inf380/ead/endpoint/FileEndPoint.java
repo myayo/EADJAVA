@@ -73,6 +73,9 @@ public class FileEndPoint {
 			JsonObject fileTree = Json.createObjectBuilder().add("action", action)
 					.add("files", fileService.getFileTree(Configuration.projectsBaseUrl+ username + File.separator + path, username)).build();
 			result = fileTree.toString();
+		case "removeFile" :
+			path = jsonObject.getString("path");
+			fileService.deleteFile(Configuration.projectsBaseUrl + username + File.separator + path);
 		default:
 			break;
 		}
