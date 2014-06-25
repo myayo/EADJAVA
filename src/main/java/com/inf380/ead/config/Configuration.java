@@ -7,5 +7,5 @@ package com.inf380.ead.config;
  */
 public class Configuration {
 
-	public static String projectsBaseUrl = "C:\\Users\\Abbès\\Desktop";
+	public static String projectsBaseUrl = "C:\\Users\\Marcel Djongon\\Desktop\\inf380";
 }

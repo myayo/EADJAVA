@@ -38,7 +38,7 @@ public class CompileRunEndpoint {
 			break;
 		case "run":
 			mainClassName = jsonObject.getString("mainClassPath"); 
-			result = compileRunDebugService.run(mainClassName, path+ "/bin");
+			result = compileRunDebugService.run(mainClassName, path+ File.separator + "bin");
 			break;
 		case "compilerun":
 			mainClassName = jsonObject.getString("mainClassName");
@@ -47,7 +47,7 @@ public class CompileRunEndpoint {
 			mainClassName.replaceAll("/", ".");
 			String username = jsonObject.getString("username");
 			String projectPath = Configuration.projectsBaseUrl + username +File.separator+ path;
-			result = compileRunDebugService.compileRun( projectPath , projectPath+ "/bin",mainClassName);
+			result = compileRunDebugService.compileRun( projectPath , projectPath+ File.separator +"bin",mainClassName);
 			break;
 		}
 		System.out.println("Result : "+result);

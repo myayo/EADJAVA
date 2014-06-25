@@ -1,12 +1,15 @@
 package com.inf380.servlet;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.inf380.ead.config.Configuration;
 import com.inf380.ead.service.ZipService;
 
 /**
@@ -28,7 +31,15 @@ public class ZipDownloadServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = request.getParameter("");
+		String username = request.getParameter("username");
+		String path = request.getParameter("path");
+		String projectPath = Configuration.projectsBaseUrl + username + File.separator + path;
+		byte[] zip = zipService.createZip(projectPath);
+		ServletOutputStream sos = response.getOutputStream();
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", "attachment; filename="+path+".zip");
+        sos.write(zip);
+        sos.flush();
 	}
 
 }

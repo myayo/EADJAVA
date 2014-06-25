@@ -56,9 +56,11 @@
 	<ul class="control">
 		<li class="glyphicon glyphicon-refresh" class="toolBar"></li>
 		<li class="glyphicon glyphicon-play-circle" class="toolBar" ng-click="compileandrun()"></li>
-		<li class="glyphicon glyphicon-remove" class="toolBar" ng-click="remove()"></li>
-		<li class="glyphicon glyphicon-download-alt" class="toolBar">
-			<a ng-href="{{downloadUrl}}"></a>
+		<li class="toolBar">
+			<a ng-click="remove()" target="_blank"><i  class="glyphicon glyphicon-remove"></i></a>
+		</li>
+		<li  class="toolBar">
+			<a ng-href="{{downloadUrl}}" target="_blank"><i class="glyphicon glyphicon-download-alt"></i></a>
 		</li>
 		<li class="dropdown pull-right">
 		    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-plus"></i></a>
