@@ -1,4 +1,4 @@
-var app = angular.module('eadApp', ['angularBootstrapNavTree', "ui.ace"]);
+var app = angular.module('eadApp', ['angularBootstrapNavTree', "ui.ace", "ngSanitize"]);
 
 app.factory("FileService", function() {
 	
@@ -231,12 +231,17 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	newClass.src = classContent;
 	
 	addFileInTree(newClass);
-	$scope.newClassName = "";
-	$scope.newClassPackage = "";
-	$scope.addMain = false;
 	//communicate with serveur  createFile = function(path, username, type, src)
 	FileService.createFile(newClass.path, $scope.username, "file", newClass.src);
 	$scope.loadFile(newClass);
+	$scope.apply();
+  };
+  
+  $scope.cancel = function(){
+	  $scope.newClassName = "";
+	  $scope.newClassPackage = "";
+	  $scope.addMain = false;
+	  $scope.$apply();
   };
   
   $scope.addInterface = function(newInterfaceName, newInterfacePackage){

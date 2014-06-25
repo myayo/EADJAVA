@@ -301,7 +301,7 @@ line-height: 1.5em;
 				</div>
 			</div>
 			<div id="title">
-				Console
+				Output
 			</div>
 			<div id="bubble">
 				<div class="shine"></div>
@@ -310,9 +310,8 @@ line-height: 1.5em;
 		</div>
 	</div>
 	<div id="body">
-		<div style="display: inline-block;  margin-bottom: -3px;">Ouput > </div>
 		<div style="display: inline-block;  margin-bottom: -3px;">
-			<p>{{compileResult}}</p>
+			<p ng-bind-html="compileResult"></p>
 		</div>
 		<div class="cursor"></div>	
 	</div>	
