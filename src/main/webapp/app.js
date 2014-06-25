@@ -159,7 +159,7 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		case "loadProjectFile":
 			$scope.files = [obj.files];
 			var projectpath = $scope.files[0].path;
-			$scope.downloadUrl += "ZipDownloadServlet?user=" +$scope.username + "&path=" + projectpath;
+			$scope.downloadUrl = "ZipDownloadServlet?user=" +$scope.username + "&path=" + projectpath;
 			console.log($scope.downloadUrl);
 			$scope.startTreeAnim = false;
 			$scope.$apply();
@@ -365,7 +365,8 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		//communicate with serveur createProject to server createFile = function(path, username, type, src)
 		FileService.createFile(project.path, $scope.username, "directory");
 		$scope.files = [project];
-		
+		var projectpath = $scope.files[0].path;
+		$scope.downloadUrl = "ZipDownloadServlet?user=" +$scope.username + "&path=" + projectpath;
 	};
   
   
