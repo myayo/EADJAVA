@@ -1,5 +1,6 @@
 package com.inf380.ead.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,12 +17,12 @@ public class ZipService {
 	 * @param pathName
 	 * @throws IOException
 	 */
-	public void createZip(String pathName) throws IOException{
+	public byte[] createZip(String pathName) throws IOException{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		File dir = new File(pathName);
 		List<String> fileList = getFileList(dir, dir.getAbsolutePath());
 		String zipName= pathName.substring(0, pathName.lastIndexOf("/") +1) + dir.getName()+".zip";
-		FileOutputStream fos=new FileOutputStream(zipName);
-		ZipOutputStream zos=new ZipOutputStream(fos);
+		ZipOutputStream zos=new ZipOutputStream(baos);
 
 		for(String filePath:fileList){
 			ZipEntry ze=new ZipEntry(filePath);
@@ -37,7 +38,8 @@ public class ZipService {
 			fis.close();
 		}
 		zos.close();
-		fos.close();
+		baos.close();
+		return baos.toByteArray();
 	}
 
 	private List<String> getFileList(File dir, String sourceFolder) {

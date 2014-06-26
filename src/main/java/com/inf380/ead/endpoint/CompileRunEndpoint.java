@@ -34,11 +34,11 @@ public class CompileRunEndpoint {
 		String mainClassName = "";
 		switch (action) {
 		case "compile":
-			result = compileRunService.compile(path, path + "/bin");
+			result = compileRunService.compile(path, path + File.separator + "bin");
 			break;
 		case "run":
 			mainClassName = jsonObject.getString("mainClassPath");
-			result = compileRunService.run(path + "/bin", mainClassName);
+			result = compileRunService.run(path +  File.separator +"bin", mainClassName);
 			break;
 		case "compilerun":
 			mainClassName = jsonObject.getString("mainClassName");

@@ -1,6 +1,9 @@
 /**
 ** EXPLORER STYLE
 **/
+.espacement{
+	padding :11px;
+}
 #sidebar {
 	background-color: #EEE;
     position: absolute;

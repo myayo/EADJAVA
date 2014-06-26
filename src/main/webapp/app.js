@@ -151,7 +151,7 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
   $scope.projectsLoaded = false;
   $scope.startTreeAnim = false;
   
-  $scope.downloadUrl = "/ZipServlet/";
+  $scope.downloadUrl = "";
 	//message received from server 
 	FileService.subscribe(function(message){
 //		console.log(message);
@@ -164,8 +164,9 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 			
 		case "loadProjectFile":
 			$scope.files = [obj.files];
-			var projectpath = $scope.files[0].path
-			$scope.downloadUrl += "?user=" +$scope.username + "&path=" + projectpath;
+			var projectpath = $scope.files[0].path;
+			$scope.downloadUrl = "ZipDownloadServlet?user=" +$scope.username + "&path=" + projectpath;
+			console.log($scope.downloadUrl);
 			$scope.startTreeAnim = false;
 			$scope.$apply();
 			break;
@@ -253,14 +254,13 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	//communicate with serveur  createFile = function(path, username, type, src)
 	FileService.createFile(newClass.path, $scope.username, "file", newClass.src);
 	$scope.loadFile(newClass);
-	$scope.apply();
+	$scope.cancel();
   };
   
   $scope.cancel = function(){
 	  $scope.newClassName = "";
 	  $scope.newClassPackage = "";
 	  $scope.addMain = false;
-	  $scope.$apply();
   };
   
   $scope.addInterface = function(newInterfaceName, newInterfacePackage){
@@ -371,7 +371,8 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		//communicate with serveur createProject to server createFile = function(path, username, type, src)
 		FileService.createFile(project.path, $scope.username, "directory");
 		$scope.files = [project];
-		
+		var projectpath = $scope.files[0].path;
+		$scope.downloadUrl = "ZipDownloadServlet?user=" +$scope.username + "&path=" + projectpath;
 	};
   
   
@@ -483,4 +484,26 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		$scope.$apply();
 		console.log($scope.compileResult);
 	});
+}).controller("loginCtrl", function($scope, $http) {
+	$scope.user = {};	
+	$scope.login = function(){
+		$http({
+	        method  : 'POST',
+	        url     : 'LoginServlet',
+	        data    : $.param($scope.user),  // pass in data as strings
+	        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+	    })
+	        .success(function(data) {
+	            console.log(data);
+
+//	            if (!data.success) {
+//	            	// if not successful, bind errors to error variables
+//	                $scope.errorName = data.errors.name;
+//	                $scope.errorSuperhero = data.errors.superheroAlias;
+//	            } else {
+//	            	// if successful, bind success message to message
+//	                $scope.message = data.message;
+//	            }
+	        });
+	};
 });
