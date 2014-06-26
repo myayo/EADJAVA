@@ -47,7 +47,7 @@ public class CompileRunEndpoint {
 			mainClassName.replaceAll("/", ".");
 			String username = jsonObject.getString("username");
 			String projectPath = Configuration.projectsBaseUrl + username +File.separator+ path;
-			result = compileRunService.compileAndRun(projectPath, projectPath + "/bin", mainClassName);
+			result = compileRunService.compileAndRun(projectPath, projectPath + File.separator+"bin", mainClassName);
 			break;
 		case "stop":
 			System.out.println("old action "+action+" going to be stop");

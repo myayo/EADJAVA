@@ -9,7 +9,7 @@ app.factory("FileService", function() {
 			return;
 		}
 		
-		var wsUrl = "ws://"+document.location.host + "/ead/" + "fileEndPoint";
+		var wsUrl = "ws://"+document.location.host + "/EADJAVA/" + "fileEndPoint";
 		var webSocket = new WebSocket(wsUrl);
 		webSocket.onopen = function(){
 			console.log("CONNECTED TO FILE WEBSOCKET");
@@ -79,7 +79,7 @@ app.factory("FileService", function() {
 		if(compileRunService.ws && compileRunService.ws.readyState == WebSocket.OPEN){
 			return;
 		}
-		var wsUrl = "ws://"+document.location.host + "/ead/" + "compileRunEndpoint";
+		var wsUrl = "ws://"+document.location.host + "/EADJAVA/" + "compileRunEndpoint";
 		var webSocket = new WebSocket(wsUrl);
 		
 		webSocket.onopen = function(){
