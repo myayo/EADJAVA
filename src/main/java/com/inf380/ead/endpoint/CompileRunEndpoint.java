@@ -6,6 +6,7 @@ import java.io.StringReader;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.websocket.OnMessage;
+import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.inf380.ead.config.Configuration;
@@ -24,36 +25,37 @@ public class CompileRunEndpoint {
 	 * @throws Exception 
 	 */
 	@OnMessage
-	public String onMessage(String message) throws Exception{
+	public void onMessage(String message, Session session) throws Exception{
 		System.out.println("receiving message  : "+message);
-		String result = "";
 		//decode message
 		JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
 		String action = jsonObject.getString("action");
-		String path = jsonObject.getString("path");
+		String path = "";
 		String mainClassName = "";
+		compileRunService.setWebSocketSession(session);
 		switch (action) {
 		case "compile":
-			result = compileRunService.compile(path, path + File.separator + "bin");
+			path = jsonObject.getString("path");
+			compileRunService.compile(path, path + File.separator + "bin");
 			break;
 		case "run":
+			path = jsonObject.getString("path");
 			mainClassName = jsonObject.getString("mainClassPath");
-			result = compileRunService.run(path +  File.separator +"bin", mainClassName);
+			compileRunService.run(path +  File.separator +"bin", mainClassName);
 			break;
 		case "compilerun":
+			path = jsonObject.getString("path");
 			mainClassName = jsonObject.getString("mainClassName");
 			mainClassName = mainClassName.substring(path.length() + 1);
 			mainClassName = mainClassName.substring(0, mainClassName.indexOf('.'));
-			mainClassName.replaceAll("/", ".");
 			String username = jsonObject.getString("username");
 			String projectPath = Configuration.projectsBaseUrl + username +File.separator+ path;
-			result = compileRunService.compileAndRun(projectPath, projectPath + File.separator+"bin", mainClassName);
+			compileRunService.compileAndRun(projectPath, projectPath + File.separator+"bin", mainClassName);
 			break;
 		case "stop":
 			System.out.println("old action "+action+" going to be stop");
-			result = compileRunService.stop();
+			compileRunService.stop();
+			break;
 		}
-		System.out.println("Result : "+result);
-		return result;
 	}
 }

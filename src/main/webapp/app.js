@@ -122,17 +122,18 @@ app.factory("FileService", function() {
 	};
 	
 	compileRunService.Run = function(path, mainClass){
-		 compileRunService.ws.send({
+		 compileRunService.ws.send(JSON.stringify({
 			 action: "run",
 			 path: path,
 			 mainClassPath: mainClass
-		 });
+		 }));
 	};
 	
-	compileRunService.Stop = function(){
-		 compileRunService.ws.send({
+	compileRunService.stop = function(){
+		console.log("sending stop to server");
+		 compileRunService.ws.send(JSON.stringify({
 			 action: "stop"
-		 });
+		 }));
 	};
 	
 	return compileRunService;
@@ -190,7 +191,7 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	};
 	
 	connecting();
-	setTimeout(function(){FileService.getProjects($scope.username);}, 2000);
+	setTimeout(function(){FileService.getProjects($scope.username);}, 5000);
   
   
   var addFileInTree = function(file){
@@ -474,15 +475,15 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	};
 	
 	$scope.stop = function(){
+		console.log("Receiving stop event");
 		CompileRunService.stop();
 	};
 	
 	$scope.compileResult = "";
 	
 	CompileRunService.subscribe(function(message){
-		$scope.compileResult = message.replace(/\n/g, "<br />");
+		$scope.compileResult += message.replace(/\n/g, "<br />");
 		$scope.$apply();
-		console.log($scope.compileResult);
 	});
 }).controller("loginCtrl", function($scope, $http) {
 	$scope.user = {};	

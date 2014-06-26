@@ -77,6 +77,7 @@ public class FileService {
 	 */
 	public List<String> getProjects(String username) {
 		List<String> projects = new ArrayList<>();
+		System.out.println("Project base Url " +Configuration.projectsBaseUrl);
 		File userFolder = new File(Configuration.projectsBaseUrl+ username);
 		if(userFolder.exists() && userFolder.isDirectory()){
 			for (File file : userFolder.listFiles()) {

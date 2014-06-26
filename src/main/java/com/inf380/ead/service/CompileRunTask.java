@@ -6,18 +6,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
+
+import javax.websocket.Session;
 
 import org.apache.commons.io.FileUtils;
 
 
-public class CompileRunTask implements Callable<String> {
+public class CompileRunTask implements Runnable {
+
 	private String operation;
 	private String sourcesPath, classPath, mainClass;
-	
+	private Session webSocketSession;
+
 	public CompileRunTask(){
 	}
-	
+
 	public CompileRunTask(String op, String sP,String cP){
 		operation=op;
 		sourcesPath=sP;
@@ -30,37 +33,10 @@ public class CompileRunTask implements Callable<String> {
 		classPath=cP;
 		mainClass=mC;
 	}
-	
-	@Override
-	public String call() throws Exception {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-		String result="";
-		if(operation.equals("compile")){
-			try {
-				result= compile(sourcesPath, classPath);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if(operation.equals("run")){
-			result= run( mainClass, classPath);
-		}
-		if(operation.equals("compilerun")){
-			try {
-				result= compileRun(sourcesPath, classPath, mainClass);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-	
+
 	/************Getters and Setters***************/
 
-	
+
 	public String getOperation() {
 		return operation;
 	}
@@ -92,7 +68,11 @@ public class CompileRunTask implements Callable<String> {
 	public void setMainClass(String mainClass) {
 		this.mainClass = mainClass;
 	}
-	
+
+	public void setWebSocketSession(Session webSocketSession) {
+		this.webSocketSession = webSocketSession;
+	}
+
 	/************Methods***************/
 
 	/**
@@ -146,13 +126,14 @@ public class CompileRunTask implements Callable<String> {
 		String error=null;
 		try {
 			//run the class containing the method main with the command java
-			Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
-			error=getLines(p.getErrorStream());
-			if(error.equals("")){
-				result=getLines( p.getInputStream());
-			}
-			else{
-				result=error;
+			ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp",classOutputDirPathName, mainClassName);
+			//			Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
+			Process p = processBuilder.start();
+			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line = null;
+			while ((line = br.readLine())!= null) {
+				System.out.println(line);
+				webSocketSession.getBasicRemote().sendText(line);
 			}
 			//wait process end
 			p.waitFor();
@@ -190,7 +171,6 @@ public class CompileRunTask implements Callable<String> {
 		String line = null;
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		while ((line = br.readLine())!= null) {
-			System.out.println("run line " +line);
 			result += line + "\n";
 		}
 		return result;
@@ -215,7 +195,52 @@ public class CompileRunTask implements Callable<String> {
 		return javaFiles;
 
 	}
-	
-	
+
+	@Override
+	public void run() {
+
+		String result="";
+		if(operation.equals("compile")){
+			try {
+				//Attempt to compile the file;
+				result= compile(sourcesPath, classPath);
+				//send the result (i.e: compilation Succeed or compilation failed + caused)
+				webSocketSession.getBasicRemote().sendText(result);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if(operation.equals("run")){
+
+			try {
+				//run the compile file of the project
+				result= run( mainClass, classPath);
+				//send the result
+				webSocketSession.getBasicRemote().sendText(result);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(operation.equals("compilerun")){
+			try {
+				//Attempt to compile the file;
+				result= compile(sourcesPath, classPath);
+				//send the result (i.e: compilation Succeed or compilation failed + caused)
+				webSocketSession.getBasicRemote().sendText(result);
+				if(result.equals("Compilation Succeed!")){
+					//run the compile file of the project
+					result= run( mainClass, classPath);
+					//send the result
+					webSocketSession.getBasicRemote().sendText(result);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+
 }
 
