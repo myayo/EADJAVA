@@ -36,9 +36,7 @@ app.factory("FileService", function() {
 				action : "getProject",
 				username : username
 			});
-					FileService.ws.send(json);
-		
-		
+		FileService.ws.send(json);
 	};
 	
 	FileService.loadProjectFiles = function(project, username){
@@ -155,7 +153,6 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
   $scope.downloadUrl = "";
 	//message received from server 
 	FileService.subscribe(function(message){
-//		console.log(message);
 		var obj = JSON.parse(message);
 		switch (obj.action) {
 		case "getProject":
@@ -167,9 +164,7 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 			$scope.files = [obj.files];
 			var projectpath = $scope.files[0].path;
 			$scope.downloadUrl = "ZipDownloadServlet?user=" +$scope.username + "&path=" + projectpath;
-			console.log($scope.downloadUrl);
 			$scope.startTreeAnim = false;
-			$scope.$apply();
 			break;
 		case "createFile":
 			console.log(message);
@@ -236,12 +231,13 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	var newClass = {};
 	newClass.label = name + ".java";
 	var packagePath = packageName.replace(/\./g,'/');
+	var classContent = "";
 	if(packagePath == ""){
 		newClass.path = $scope.files[0].path + "/" + newClass.label;
 	}else{
 		newClass.path = $scope.files[0].path + "/" + packagePath + "/" + newClass.label;
+		classContent += "package " + packageName + ";\n\n";
 	}
-	var classContent = "package " + packageName + ";\n\n";
 	classContent += "public class "+  name + " {\n\n";
 	if(addMain){
 		classContent += "\t" + "public static void main(String[] args){\n";
@@ -301,7 +297,6 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	  }
 	  //remove file from project file
 	  //1- check if project to delete
-	  console.log(file);
 	  if(file.path == $scope.files[0].path){
 		  $scope.files = [];
 	  }else{
@@ -442,8 +437,6 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	
 	$scope.zoomOutEditor = function(){
 		var size = parseInt($scope.editor.getFontSize(), 10) || 12;
-		console.log(size);
-		console.log($scope.editor);
 		$scope.editor.setFontSize(size - 1);
 	};
 	
@@ -462,13 +455,14 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 	};
 	
 	$scope.compile = function(){
-		$scope.compileResult = "Compiling...";
+		$scope.compileResult.push("Compiling...");
 		var path = $scope.files[0].path;
 		CompileRunService.compile(path,null, $scope.username);
 	};
 	
 	$scope.compileandrun = function(){
-		$scope.compileResult = "Compiling...";
+		$scope.compileResult = [];
+		$scope.compileResult.push("Compiling...");
 		var path = $scope.files[0].path;
 		var mainClassName = $scope.openFiles[$scope.selectedIndex].path;
 		CompileRunService.compileAndRun(path, mainClassName, $scope.username);
@@ -479,10 +473,13 @@ app.controller('MainCtrl', function($scope, FileService, CompileRunService) {
 		CompileRunService.stop();
 	};
 	
-	$scope.compileResult = "";
+	$scope.compileResult = [];
 	
 	CompileRunService.subscribe(function(message){
-		$scope.compileResult += message.replace(/\n/g, "<br />");
+		var msg = message.split("\n");
+		for (var i = 0; i < msg.length; i++) {
+			$scope.compileResult.push(msg[i].replace(/\n/g, "<br />"));
+		}
 		$scope.$apply();
 	});
 }).controller("loginCtrl", function($scope, $http) {

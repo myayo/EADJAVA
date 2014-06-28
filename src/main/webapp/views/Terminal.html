@@ -19,8 +19,7 @@ line-height: 1.5em;
     -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
     /*-webkit-transition:all 0.5s; */
     overflow: hidden; 
-    height: 98%;
-    min-height: 200px;
+    height: 90%;
     max-height: 500px;
 }
 
@@ -309,9 +308,9 @@ line-height: 1.5em;
 			</div>
 		</div>
 	</div>
-	<div id="body">
-		<div style="display: inline-block;  margin-bottom: -3px;">
-			<p ng-bind-html="compileResult"></p>
+	<div id="body"  scroll-glue>
+		<div ng-repeat="compile in compileResult track by $index">
+			<p ng-bind-html="compile"></p>
 		</div>
 		<div class="cursor"></div>	
 	</div>	

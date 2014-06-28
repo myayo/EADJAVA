@@ -123,20 +123,28 @@ public class CompileRunTask implements Runnable {
 	public String run(String mainClassName, String classOutputDirPathName) {
 		System.out.println( "Running main from class "+ mainClassName+"..." );
 		String result=null;
-		String error=null;
 		try {
 			//run the class containing the method main with the command java
 			ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp",classOutputDirPathName, mainClassName);
-			//			Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
 			Process p = processBuilder.start();
 			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line = null;
+			String line = "";
+			int i = 0;
 			while ((line = br.readLine())!= null) {
-				System.out.println(line);
-				webSocketSession.getBasicRemote().sendText(line);
+				result += line + "\n";
+				i++;
+				if(i == 100){
+					Thread.sleep(2000);
+					webSocketSession.getBasicRemote().sendText(result);
+					result = "";
+					i = 0;
+				}
 			}
+
+			webSocketSession.getBasicRemote().sendText(result);
 			//wait process end
 			p.waitFor();
+			webSocketSession.getBasicRemote().sendText("Finished");
 		} 
 		catch( InterruptedException ie ) { System.out.println( ie );} 
 		catch (IOException e) {e.printStackTrace();}
