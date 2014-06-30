@@ -11,74 +11,73 @@ import javax.websocket.Session;
 
 import org.apache.commons.io.FileUtils;
 
-
+/**
+ * Thread to execute compile or run operation
+ *
+ */
 public class CompileRunTask implements Runnable {
 
+	/**
+	 * The operation to execute could be 'run', 'compilerun', 'compile'
+	 */
 	private String operation;
-	private String sourcesPath, classPath, mainClass;
+
+	/**
+	 * The path to the code source
+	 */
+	private String sourcesPath;
+	/**
+	 * The directory of the compile program
+	 */
+	private String binPath;
+	/**
+	 * The main class to execute
+	 */
+	private String mainClass;
+	/**
+	 * The session to send message to the client
+	 */
 	private Session webSocketSession;
 
+	/**
+	 * Constructor
+	 */
 	public CompileRunTask(){
 	}
 
-	public CompileRunTask(String op, String sP,String cP){
-		operation=op;
-		sourcesPath=sP;
-		classPath=cP;
+	/**
+	 * Constructor
+	 * @param operation : the operation to execute
+	 * @param sourcePath : the code source directory
+	 * @param binPath : the compile program directory
+	 */
+	public CompileRunTask(String operation, String sourcePath,String binPath){
+		this.operation=operation;
+		this.sourcesPath=sourcePath;
+		this.binPath=binPath;
 	}
 
-	public CompileRunTask(String op, String sP,String cP, String mC){
-		operation=op;
-		sourcesPath=sP;
-		classPath=cP;
-		mainClass=mC;
-	}
-
-	/************Getters and Setters***************/
-
-
-	public String getOperation() {
-		return operation;
-	}
-
-	public void setOperation(String operation) {
-		this.operation = operation;
-	}
-
-	public String getSourcesPath() {
-		return sourcesPath;
-	}
-
-	public void setSourcesPath(String sourcesPath) {
-		this.sourcesPath = sourcesPath;
-	}
-
-	public String getClassPath() {
-		return classPath;
-	}
-
-	public void setClassPath(String classPath) {
-		this.classPath = classPath;
-	}
-
-	public String getMainClass() {
-		return mainClass;
-	}
-
-	public void setMainClass(String mainClass) {
-		this.mainClass = mainClass;
+	/**
+	 * Constructor
+	 * @param operation : the operation to execute
+	 * @param sourcePath : the code source directory
+	 * @param binPath : the compile program directory
+	 * @param mainClass : the main class to execute
+	 */
+	public CompileRunTask(String operation, String sourcePath,String binPath , String mainClass){
+		this(operation, sourcePath, binPath);
+		this.mainClass=mainClass;
 	}
 
 	public void setWebSocketSession(Session webSocketSession) {
 		this.webSocketSession = webSocketSession;
 	}
 
-	/************Methods***************/
 
 	/**
 	 * compile all the java file present in the package sourcesDir
 	 */
-	public String compile( String sourcesDirPathName, String classOutputDirPathName ) throws IOException {	
+	private String compile( String sourcesDirPathName, String classOutputDirPathName ) throws IOException {	
 		String result = null;
 		boolean success=true;
 		System.out.println( "Compiling files from "+ sourcesDirPathName+"..." );
@@ -105,7 +104,6 @@ public class CompileRunTask implements Runnable {
 				try {
 					result += "----compilation error----\n" +getLines(p.getErrorStream());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -120,9 +118,9 @@ public class CompileRunTask implements Runnable {
 	/**
 	 * run the class containing the method main
 	 */
-	public String run(String mainClassName, String classOutputDirPathName) {
+	private void run(String mainClassName, String classOutputDirPathName) {
 		System.out.println( "Running main from class "+ mainClassName+"..." );
-		String result=null;
+		String result="";
 		try {
 			//run the class containing the method main with the command java
 			ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp",classOutputDirPathName, mainClassName);
@@ -134,10 +132,14 @@ public class CompileRunTask implements Runnable {
 				result += line + "\n";
 				i++;
 				if(i == 100){
-					Thread.sleep(2000);
-					webSocketSession.getBasicRemote().sendText(result);
-					result = "";
-					i = 0;
+					try {
+						Thread.sleep(2000);
+						webSocketSession.getBasicRemote().sendText(result);
+						result = "";
+						i = 0;
+					} catch (Exception e) {
+						return;
+					}
 				}
 			}
 
@@ -149,26 +151,6 @@ public class CompileRunTask implements Runnable {
 		catch( InterruptedException ie ) { System.out.println( ie );} 
 		catch (IOException e) {e.printStackTrace();}
 		catch (Exception e) {e.printStackTrace();}
-		return result;
-	}
-
-	/**
-	 * compile the java files in the directory sourcesDir
-	 * put the generate class in the directory classOutputDir
-	 * then execute the class containing the method main
-	 */
-	public String compileRun(String sourcesDirPathName, String classOutputDirPathName , String mainClass){
-		String result = null;
-		try {
-			result=compile(sourcesDirPathName,classOutputDirPathName);
-			if(result.equals("Compilation Succeed!")){
-				result=run(mainClass, classOutputDirPathName);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
 	}
 
 	/**
@@ -187,7 +169,7 @@ public class CompileRunTask implements Runnable {
 	/** 
 	 * return the list of java files present in the package
 	 */  
-	public ArrayList<File> getPkgFiles(String pkgPathName){
+	private ArrayList<File> getPkgFiles(String pkgPathName){
 		File[] files=new File(pkgPathName).listFiles();
 		ArrayList<File> javaFiles=new ArrayList<File>();
 
@@ -201,8 +183,9 @@ public class CompileRunTask implements Runnable {
 			}
 		}
 		return javaFiles;
-
 	}
+
+
 
 	@Override
 	public void run() {
@@ -211,44 +194,32 @@ public class CompileRunTask implements Runnable {
 		if(operation.equals("compile")){
 			try {
 				//Attempt to compile the file;
-				result= compile(sourcesPath, classPath);
+				result= compile(sourcesPath, binPath);
 				//send the result (i.e: compilation Succeed or compilation failed + caused)
 				webSocketSession.getBasicRemote().sendText(result);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		if(operation.equals("run")){
+		else if(operation.equals("run")){
 
-			try {
-				//run the compile file of the project
-				result= run( mainClass, classPath);
-				//send the result
-				webSocketSession.getBasicRemote().sendText(result);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			//run the compile file of the project
+			run( mainClass, binPath);
 		}
-		if(operation.equals("compilerun")){
+		else if(operation.equals("compilerun")){
 			try {
 				//Attempt to compile the file;
-				result= compile(sourcesPath, classPath);
+				result= compile(sourcesPath, binPath);
 				//send the result (i.e: compilation Succeed or compilation failed + caused)
 				webSocketSession.getBasicRemote().sendText(result);
 				if(result.equals("Compilation Succeed!")){
 					//run the compile file of the project
-					result= run( mainClass, classPath);
-					//send the result
-					webSocketSession.getBasicRemote().sendText(result);
+					run( mainClass, binPath);
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-
-
 }
 

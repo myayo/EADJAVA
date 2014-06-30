@@ -11,44 +11,48 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inf380.ead.config.Configuration;
+
 public class FileServiceTest {
 
 	private FileService fileService;
 
 	@Before
 	public void setUp(){
+		Configuration.projectsBaseUrl = "src/test/resources/";
 		fileService = new FileService();
 	}
 
 	@Test
 	public void testCreateDirectory() throws IOException{
-		String pathname="src/test/resources/directoryTest";
-		fileService.createOrUpdateFile(pathname, "directory", null);
-		File file = new File(pathname);
+		String pathname="Test";
+		fileService.createOrUpdateFile(pathname, "directory", null, "Abbes");
+		String fileAbsolutePath = Configuration.projectsBaseUrl + "Abbes" + "/" +pathname;
+		File file = new File(fileAbsolutePath);
 		assertTrue(file.exists());
 		assertTrue(file.isDirectory());
-		fileService.deleteFile(pathname);
+		fileService.deleteFile(fileAbsolutePath);
 		assertFalse(file.exists());
 	}
 
 	@Test
 	public void testCreateFile() throws IOException{
-		String pathname="src/test/resources/Main.java";
-		fileService.createOrUpdateFile(pathname, "file", "public void");
-		File file = new File(pathname);
+		String pathname="Test/Main.java";
+		fileService.createOrUpdateFile(pathname, "file", "public void", "Abbes");
+		String fileAbsolutePath = Configuration.projectsBaseUrl + "Abbes" + "/" +pathname;
+		File file = new File(fileAbsolutePath);
 		assertTrue(file.exists());
 		assertTrue(file.isFile());
 		assertTrue(file.length()>0);
-		fileService.deleteFile(pathname);
+		fileService.deleteFile(fileAbsolutePath);
 		assertFalse(file.exists());
 	}
 
 	@Test
 	public void testGetProject(){
-		fileService.setProjectsBaseUrl("src/test/resources/");
 		List<String> projects = fileService.getProjects("Marcel");
 		assertEquals(projects.size(), 2);
 		assertTrue(projects.contains("Test"));
-		assertTrue(projects.contains("Project"));
+		assertTrue(projects.contains("test1"));
 	}
 }

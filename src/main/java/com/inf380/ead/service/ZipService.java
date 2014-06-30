@@ -3,13 +3,16 @@ package com.inf380.ead.service;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * Zip service that create zip file
+ * @author myayo & Hanzhi
+ */
 public class ZipService {
 
 	/**
@@ -21,7 +24,6 @@ public class ZipService {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		File dir = new File(pathName);
 		List<String> fileList = getFileList(dir, dir.getAbsolutePath());
-		String zipName= pathName.substring(0, pathName.lastIndexOf("/") +1) + dir.getName()+".zip";
 		ZipOutputStream zos=new ZipOutputStream(baos);
 
 		for(String filePath:fileList){

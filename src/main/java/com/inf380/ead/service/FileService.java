@@ -17,6 +17,7 @@ import com.inf380.ead.config.Configuration;
 
 /**
  * Class that manage file Operation
+ * @author myayo & Hanzhi
  */
 public class FileService {
 
@@ -27,6 +28,7 @@ public class FileService {
 	 * @param pathname : the relativePath of the file or the directory
 	 * @param type : the type i.e (File or directory)
 	 * @param content: the content of the file
+	 * @return true if file or directory is created
 	 * @throws IOException 
 	 */
 	public boolean createOrUpdateFile(String pathname, String type, String content, String username) throws IOException{
@@ -71,13 +73,12 @@ public class FileService {
 	}
 
 	/**
-	 * 
-	 * @param username
-	 * @return
+	 * Get all the project associate to this username
+	 * @param username : the username to retrieve his projects
+	 * @return the lit of the project or an empty list if no project founded
 	 */
 	public List<String> getProjects(String username) {
 		List<String> projects = new ArrayList<>();
-		System.out.println("Project base Url " +Configuration.projectsBaseUrl);
 		File userFolder = new File(Configuration.projectsBaseUrl+ username);
 		if(userFolder.exists() && userFolder.isDirectory()){
 			for (File file : userFolder.listFiles()) {
@@ -89,6 +90,13 @@ public class FileService {
 		return projects;
 	}
 
+	/**
+	 * Class that retrieve a project's files and construct his file tree
+	 * @param dir : the project  directory
+	 * @param username : the user name
+	 * @return : a json object representing the project file tree
+	 * @throws IOException
+	 */
 	public JsonObjectBuilder getFileTree(String dir,String username) throws IOException{
 		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 		File file = new File(dir);

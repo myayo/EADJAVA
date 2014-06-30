@@ -14,24 +14,24 @@ import javax.websocket.server.ServerEndpoint;
 import com.inf380.ead.config.Configuration;
 import com.inf380.ead.service.FileService;
 
+/**
+ * Class that represent a websocket server connexion for file Management
+ * it's open the connexion, receive mesage from javascript websocket
+ * and send back Json message.
+ * @author myayo
+ */
 @ServerEndpoint("/fileEndPoint")
 public class FileEndPoint {
 
 	/**
-	 * messageCreateOrUpdate = {<br>
-	 * 			action : "createFile fichier ou dossier",
-	 * 			path : "lien ou on stock",
-	 * 			src : "le contenu dans le cas d'un fichier",
-	 * 			username: "nom d'utilisateur"
-	 * }
-	 * 
-	 * messageGet = {
-	 * 			action : 'get file'
-	 * 			path : 'lien du fichier ou  du dossier'
-	 * 			username : 'nom d'utilisateur'
-	 * }
-	 * @throws IOException 
-	 * 
+	 * Receive message from websocket client
+	 * @param message : Json message receive from javascript websocket client <br/>
+	 * 				     {action : the action that should br done i.e('createFile' or 'getProject' or 'loadProjectFile' or 'removeFile') <br/>
+	 * 			  		 path : 'source file path'
+	 * 			  		 src: 'file content (empty for folder)'
+	 * 					 username: 'the username'}
+	 * @param session : The session of the websocket connexion, it is use to send response
+	 * @throws Exception
 	 */
 	@OnMessage
 	public String onMessage(String message) throws IOException{
@@ -53,10 +53,6 @@ public class FileEndPoint {
 			boolean success = fileService.createOrUpdateFile(path, type, src, username);
 			result =  success ? "sucess" : "error";
 			break;
-		case "get":
-			//get the file
-			break;
-
 		case "getProject":
 			//get the file
 			List<String> projectsName = fileService.getProjects(username);
@@ -74,7 +70,7 @@ public class FileEndPoint {
 					.add("files", fileService.getFileTree(Configuration.projectsBaseUrl+ username + File.separator + path, username)).build();
 			result = fileTree.toString();
 			break;
-			
+
 		case "removeFile" :
 			path = jsonObject.getString("path");
 			fileService.deleteFile(Configuration.projectsBaseUrl + username + File.separator + path);

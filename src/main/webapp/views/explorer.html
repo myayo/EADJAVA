@@ -7,13 +7,13 @@
 	              <h4 class="modal-title" id="myModalLabel">New class</h4>
 	          </div>
 	          <div class="modal-body">
-	              <label class="espacement">Name</label><input type="text" ng-model="newClassName"/>
-	              <label class="espacement">Package</label><input type="text" ng-model="newClassPackage"/>
+	              <label class="espacement">Name</label><input type="text" ng-model="newElementName"/>
+	              <label class="espacement">Package</label><input type="text" ng-model="newElementPackage"/>
 	              <label class="espacement">Add Main function</label><input type="checkbox" ng-model="addMain"/>
 	          </div>
 	          <div class="modal-footer">
 	              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">Cancel</button>
-	              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addClass(newClassName, newClassPackage, addMain)">Create</button>
+	              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addClass(newElementName, newElementPackage, addMain)">Create</button>
 	          </div>
 	        </div>
 	    </div>
@@ -26,12 +26,12 @@
 	              <h4 class="modal-title" id="myModalLabel">New interface</h4>
 	          </div>
 	          <div class="modal-body">
-	              <label class="espacement">Name </label><input type="text" ng-model="newInterfaceName"/>
-	              <label class="espacement">Package</label><input type="text" ng-model="newInterfacePackage"/>
+	              <label class="espacement">Name </label><input type="text" ng-model="newElementName"/>
+	              <label class="espacement">Package</label><input type="text" ng-model="newElementPackage"/>
 	          </div>
 	          <div class="modal-footer">
-	              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addInterface(newInterfaceName, newInterfacePackage)">Create</button>
+	              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+	              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addInterface(newElementName, newElementPackage)">Create</button>
 	          </div>
 	        </div>
 	    </div>
@@ -44,11 +44,11 @@
 	              <h4 class="modal-title" id="myModalLabel">New folder</h4>
 	          </div>
 	          <div class="modal-body">
-	              <label class="espacement">Name </label><input  type="text" ng-model="folderName"/>
+	              <label class="espacement">Name </label><input  type="text" ng-model="newElementName"/>
 	          </div>
 	          <div class="modal-footer">
-	              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-	              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="createProject(folderName)">Create</button>
+	              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+	              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="createProject(newElementName)">Create</button>
 	          </div>
 	        </div>
 	    </div>
